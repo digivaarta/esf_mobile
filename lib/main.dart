@@ -1,4 +1,11 @@
+import 'package:esf_mobile/pages/pages.dart';
+import 'package:esf_mobile/utils/app_constant.dart';
+import 'package:esf_mobile/utils/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+import 'package:ots/ots.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,21 +17,29 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return OTS(
+      showNetworkUpdates: true,
+      persistNoInternetNotification: false,
+      child: GetMaterialApp(
+        title: AppConstant.appName,
+        //initialRoute: Routes,
+        theme: Styles.lighTheme,
+        darkTheme: Styles.darkTheme,
+        themeMode: ThemeMode.light,
+        initialRoute: Routes.splashUrl,
+        defaultTransition: Transition.fadeIn,
+        opaqueRoute: Get.isOpaqueRouteDefault,
+        popGesture: Get.isPopGestureEnable,
+        enableLog: true,
+        getPages: AppPages.pages,
+        onInit: () async{
+          //await Firebase.initializeApp();
+          await GetStorage.init();
+          //await Get.putAsync(() => NetworkService().init());
+          //await Get.putAsync(() => AppWriteInitService().init());
+          //await Get.putAsync(() => UserAuthService().init());
+        },
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
